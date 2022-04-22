@@ -10,6 +10,18 @@ const schedule = require('node-schedule');
 const rule = new schedule.RecurrenceRule();
 rule.hour = 20;
 rule.minute = 00;
+
+const myConfig = {
+    raxConfig: {
+      retry: 5, // number of retry when facing 4xx or 5xx
+      noResponseRetries: 5, // number of retry when facing connection error
+      onRetryAttempt: err => {
+        const cfg = rax.getConfig(err);
+        console.log(`Retry attempt #${cfg.currentRetryAttempt}`); // track current trial
+      }
+    },
+    timeout: 50 // don't forget this one
+  }
 const minerList=[
     'f092228',
 'f0130884',
